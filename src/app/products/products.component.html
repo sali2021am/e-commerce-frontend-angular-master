@@ -1,0 +1,57 @@
+<div style=" width: 100%;  margin-left: 100px; margin-bottom: 400px;" >
+<div *ngIf="products" >
+
+  <div style="padding: 10px;text-align: center; "><h3 style="font-size: 40px;margin: 0;padding: 0;">{{title}}</h3></div>
+  <div *ngFor="let p of products._embedded.products">
+    <div class="col-md-4">
+    <div class="panel panel-default heigted" style="border: none; border-radius: 10px; box-shadow: 1px 1px 8px grey;">
+      <div class="panel-heading" style="background-color: #B2BABB;">{{p.name}}</div>
+      <div class="panel-body" style="text-align: center;">
+        <img   class="img-thumbnail img-rounded btn" (click)="onProductDetails(p)" [src]="this.catService.host+'/photoProduct/'+p.id+'?ts='+getTS()"/>
+        <div *ngIf="this.authService.isAdmin()">
+          <button (click)="onEditPhoto(p)">
+            <span class="glyphicon glyphicon-edit"></span>
+          </button>
+          <p *ngIf="editPhoto && currentProduct==p">
+            <input type="file" (change)="onSelectedFile($event)">
+            <button class="btn btn-success" (click)="uploadPhoto()">Upload</button>
+            {{progress}}
+          </p>
+        </div>
+        <div>
+          {{p.description}}
+        </div>
+        <div style="text-align: center;">
+          <label style="padding: 0px 0px 0px 0px;">Price : {{p.currentPrice|number:'0.00'}}</label>
+        </div>
+        <div style="padding: 0px 0px 10px 0px;text-align: center;">
+        <span *ngIf="p.promotion">
+                <img src="assets/images/promo.png" class="img-thumbnail img-circle" height="30">
+              </span>
+          <span *ngIf="p.selected">
+                <img src="assets/images/favorite.png" class="img-thumbnail img-circle" height="30">
+              </span>
+          <span *ngIf="p.available">
+                <img src="assets/images/available.png" class="img-thumbnail img-circle"  height="30">
+              </span>
+        </div>
+        <div>
+          <form #f="ngForm" (ngSubmit)="onAddProductToCaddy(p)">
+            <label class="control-label" style="text-align: center;padding: 0px 7px 0px 0px;">Quantité :</label>
+            <input type="number" name="quantity" [(ngModel)]="p.quantity" ngModel style="width: 40px">
+            <button>
+              <img src="assets/images/caddy.png">
+            </button>
+          </form>
+        </div>
+      </div>
+
+
+
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
